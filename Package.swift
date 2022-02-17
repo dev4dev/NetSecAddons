@@ -53,8 +53,5 @@ let package = Package(
                 "AuthChallengeHandler"
             ]
         )
-//        .testTarget(
-//            name: "NetworkingAddonsiOSTests",
-//            dependencies: ["AuthChallengeHandler"]),
     ]
 )

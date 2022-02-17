@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CommonCombine",
+        "repositoryURL": "git@github.com:hathway/CommonCombine.git",
+        "state": {
+          "branch": "master",
+          "revision": "3591a7798688a04f839af4f2c7f08d9b4a4dc46b",
+          "version": null
+        }
+      },
+      {
+        "package": "NetworkService",
+        "repositoryURL": "git@github.com:hathway/iOS_NetworkService.git",
+        "state": {
+          "branch": "master",
+          "revision": "f39d00f3af92db1c60f67a53c4b0fc03cd64ea88",
+          "version": null
+        }
+      },
+      {
+        "package": "TrustKit",
+        "repositoryURL": "git@github.com:datatheorem/TrustKit.git",
+        "state": {
+          "branch": null,
+          "revision": "3e98aeb36aff65067cdae55bca7be7f1157deffb",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

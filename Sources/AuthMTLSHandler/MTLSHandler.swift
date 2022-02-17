@@ -37,7 +37,7 @@ public final class MTLSHandler: AuthChallengeHandler {
 
     /// Precheck that the challenge should be handled
     /// - Parameter challenge: Challenge
-    /// - Returns: Check resutl
+    /// - Returns: Check result
     func check(challenge: URLAuthenticationChallenge) -> Bool {
         challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodClientCertificate &&
         hosts.contains(challenge.protectionSpace.host)

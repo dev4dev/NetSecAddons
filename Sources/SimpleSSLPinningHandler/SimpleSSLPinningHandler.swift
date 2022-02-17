@@ -15,6 +15,10 @@ public final class SimpleSSLPinningHandler: AuthChallengeHandler {
         let hosts: [String]
         let hashes: [String]
 
+        /// Initializer
+        /// - Parameters:
+        ///   - hosts: Hosts. Example: ["domain.com", "www.domain.com"]
+        ///   - hashes: Hashes
         public init(hosts: [String], hashes: [String]) {
             self.hosts = hosts
             self.hashes = hashes

@@ -23,7 +23,7 @@ There is a predefined class `AuthURLSessionDelegate` that conforms to `URLSessio
 
 Here is a list of currently implemented handlers:
 
-### `AuthMTLSHandler`
+### AuthMTLSHandler
 
 It allows to pass client cert validation. To use it you need to provide a host name that should be handled, a `Data` of the `p12/pfx` certificate and cert's password/passphrase.
 
@@ -42,3 +42,23 @@ openssl pkcs12 -export -out cert.pfx -inkey <dev.key> -in <dev.crt>
 
 Live example:  
 [![asciicast](https://asciinema.org/a/Ch0y2f4SbL2a8xLbfGRMZ4Mfq.svg)](https://asciinema.org/a/Ch0y2f4SbL2a8xLbfGRMZ4Mfq)
+
+
+### TrustKitSSLPinningHandler
+
+SSL Pinning using [TrustKit](https://github.com/datatheorem/TrustKit) library
+
+
+### SimpleSSLPinningHandler
+
+SSL Pinning using implementation from `JSONRequest` that is used on PEETs project
+
+
+
+## Notes
+
+### How to get a public hash for SSL Pinning
+
+```bash
+openssl s_client -servername <address> -connect <address>:443 | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
+```

@@ -7,12 +7,13 @@
 
 import Foundation
 
+/// Simple implementation of URLSessionDelegate that needs to handle authentication challenges
 public final class SessionDelegate: NSObject, URLSessionDelegate {
 
-    public let pool: AuthChallengeHandlersPool = .init()
+    public let handlersPool: AuthChallengeHandlersPool = .init()
 
     public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        let handled = pool.urlSession(session, didReceive: challenge, completionHandler: completionHandler)
+        let handled = handlersPool.urlSession(session, didReceive: challenge, completionHandler: completionHandler)
 
         if !handled {
             completionHandler(.performDefaultHandling, nil)

@@ -10,7 +10,7 @@ import Foundation
 public protocol AuthChallengeHandler {
     typealias HandlerResult = (URLSession.AuthChallengeDisposition, URLCredential?)
     /// Try to handle the challenge
-    /// - Returns: Success flag
+    /// - Returns: Handling result
     func handle(_ session: URLSession, challenge: URLAuthenticationChallenge) -> HandlerResult?
 }
 
@@ -26,6 +26,8 @@ public final class AuthChallengeHandlersPool {
         self.defaultDisposition = defaultDisposition
     }
 
+    /// Add a handler to the pool
+    /// - Parameter handler: Handler
     public func add(handler: AuthChallengeHandler) {
         handlers.append(handler)
     }
@@ -37,20 +39,18 @@ public final class AuthChallengeHandlersPool {
     ///   - completionHandler: CompetionHandler
     /// - Returns: Handling success status
     public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) -> Bool {
-        var handled = false
-
         for handler in handlers {
             if let result = handler.handle(session, challenge: challenge) {
-                handled = true
                 completionHandler(result.0, result.1)
-                break
+                return true
             }
         }
 
-        if !handled, let defaultDisposition = defaultDisposition {
+        if let defaultDisposition = defaultDisposition {
             completionHandler(defaultDisposition, nil)
+            return true
         }
 
-        return handled
+        return false
     }
 }

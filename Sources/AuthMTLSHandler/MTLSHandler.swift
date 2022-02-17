@@ -8,7 +8,7 @@
 import Foundation
 import AuthChallengeHandler
 
-final class MTLSHandler: AuthChallengeHandler {
+public final class MTLSHandler: AuthChallengeHandler {
 
     let certData: Data
     let passphrase: String
@@ -25,7 +25,7 @@ final class MTLSHandler: AuthChallengeHandler {
         challenge.protectionSpace.host == host
     }
 
-    func handle(_ session: URLSession, challenge: URLAuthenticationChallenge) -> HandlerResult? {
+    public func handle(_ session: URLSession, challenge: URLAuthenticationChallenge) -> HandlerResult? {
         guard check(challenge: challenge) else { return nil }
         return (.useCredential, .init(PKCS12: try! .init(PKCS12Data: certData, password: passphrase)))
     }

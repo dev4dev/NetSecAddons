@@ -17,7 +17,7 @@ public func urlSession(_ session: URLSession, didReceive challenge: URLAuthentic
 
 ```
 
-There is a predefined class `SessionDelegate` that conforms to `URLSessionDelegate` protocol. You can use it in case you don't have any additional handlings inside of your app. 
+There is a predefined class `AuthURLSessionDelegate` that conforms to `URLSessionDelegate` protocol. You can use it in case you don't have any additional handlings inside of your app. 
 
 ## Handlers
 

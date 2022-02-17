@@ -8,7 +8,7 @@
 import Foundation
 
 /// Simple implementation of URLSessionDelegate that needs to handle authentication challenges
-public final class SessionDelegate: NSObject, URLSessionDelegate {
+public final class AuthURLSessionDelegate: NSObject, URLSessionDelegate {
 
     public let handlersPool: AuthChallengeHandlersPool = .init()
 

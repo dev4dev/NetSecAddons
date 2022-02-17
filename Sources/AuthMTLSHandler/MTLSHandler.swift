@@ -8,7 +8,7 @@
 import Foundation
 import AuthChallengeHandler
 
-final class mTLSHandler: AuthChallengeHandler {
+final class MTLSHandler: AuthChallengeHandler {
 
     let certData: Data
     let passphrase: String

@@ -7,12 +7,13 @@
 
 import SwiftUI
 import Combine
+import CommonCombine
 
 import AuthChallengeHandler
 import AuthMTLSHandler
 import NetworkService
 import TrustKitSSLPinningHandler
-import CommonCombine
+import SimpleSSLPinningHandler
 
 struct ContentView: View {
     @StateObject var brain = Brain()
@@ -33,13 +34,25 @@ struct ContentView: View {
 
             HStack {
                 Button {
-                    brain.pinning()
+                    brain.tkPinning()
                 } label: {
-                    Text("Perform SSL Pinning Request")
+                    Text("Perform TrustKit SSL Pinning Request")
                 }
 
                 Circle()
-                    .fill(brain.state.pinning ? Color.green : Color.red)
+                    .fill(brain.state.tkPinning ? Color.green : Color.red)
+                    .frame(width: 20, height: 20)
+            }
+
+            HStack {
+                Button {
+                    brain.simplPinning()
+                } label: {
+                    Text("Perform Simple SSL Pinning Request")
+                }
+
+                Circle()
+                    .fill(brain.state.simplePinning ? Color.green : Color.red)
                     .frame(width: 20, height: 20)
             }
         }
@@ -49,7 +62,8 @@ struct ContentView: View {
 final class Brain: ObservableObject {
     struct State {
         var mtls = false
-        var pinning = false
+        var tkPinning = false
+        var simplePinning = false
     }
 
     private var subscriptions: Set<AnyCancellable> = .init()
@@ -64,6 +78,7 @@ final class Brain: ObservableObject {
 
         setupMTLS()
         setupSSLPinning()
+        setupSimpleSSLPinning()
     }
 
     private func setupMTLS() {
@@ -83,11 +98,27 @@ final class Brain: ObservableObject {
         ]))
     }
 
+    private func setupSimpleSSLPinning() {
+        delegate.handlersPool.add(handler: SimpleSSLPinningHandler(configs: [
+            .init(
+                hosts: [
+                    "www.bounteous.com",
+                    "bounteous.com"
+                ],
+                hashes: [
+                    "P4XmHAiNi9ApJchIW+skNp42+HJzOmpjEjwEBbYqroE="
+//                    "z2bgu6Rryx0PF1Fjk9M9QeAz1WetvekOjTx0bgyv06U=" // test error
+                ])
+        ]))
+    }
+
     func mtls() {
         networkService.perform(request: .get(url: URL(string: "https://nomnom-dev-api-shield.texasroadhouse.com/brand")!))
             .receiveOnMain()
             .sink { compl in
-
+                if case .failure = compl {
+                    print("ERROR: MTLS")
+                }
             } receiveValue: { [unowned self] response in
                 print("mTLS:", String(bytes: response.data, encoding: .utf8) as Any)
                 self.state.mtls = true
@@ -95,14 +126,30 @@ final class Brain: ObservableObject {
             .store(in: &subscriptions)
     }
 
-    func pinning() {
+    func tkPinning() {
         networkService.perform(request: .get(url: URL(string: "https://wearehathway.com/")!))
             .receiveOnMain()
             .sink { compl in
-
+                if case .failure = compl {
+                    print("ERROR: TK Pinning")
+                }
             } receiveValue: { [unowned self] response in
-                print("Pinning:", String(bytes: response.data, encoding: .utf8) as Any)
-                self.state.pinning = true
+                print("TK Pinning:", String(bytes: response.data, encoding: .utf8) as Any)
+                self.state.tkPinning = true
+            }
+            .store(in: &subscriptions)
+    }
+
+    func simplPinning() {
+        networkService.perform(request: .get(url: URL(string: "https://bounteous.com/")!))
+            .receiveOnMain()
+            .sink { compl in
+                if case .failure = compl {
+                    print("ERROR: Simple Pinning")
+                }
+            } receiveValue: { [unowned self] response in
+                print("Simple Pinning:", String(bytes: response.data, encoding: .utf8) as Any)
+                self.state.simplePinning = true
             }
             .store(in: &subscriptions)
     }

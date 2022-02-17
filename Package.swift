@@ -18,7 +18,10 @@ let package = Package(
         .library(
             name: "TrustKitSSLPinningHandler",
             targets: ["TrustKitSSLPinningHandler"]
-        )
+        ),
+        .library(
+            name: "SimpleSSLPinningHandler",
+            targets: ["SimpleSSLPinningHandler"])
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -42,6 +45,12 @@ let package = Package(
             dependencies: [
                 "AuthChallengeHandler",
                 "TrustKit"
+            ]
+        ),
+        .target(
+            name: "SimpleSSLPinningHandler",
+            dependencies: [
+                "AuthChallengeHandler"
             ]
         )
 //        .testTarget(

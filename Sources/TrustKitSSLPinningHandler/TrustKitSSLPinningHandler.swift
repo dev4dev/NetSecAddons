@@ -34,9 +34,11 @@ public final class TrustKitSSLPinningHandler: AuthChallengeHandler {
     }
 
     private let tk: TrustKit
+    private var hosts: [String] = []
 
     public init(configs: [Config]) {
         var domains: [String: Any] = [:]
+        var hosts: [String] = []
 
         // https://datatheorem.github.io/TrustKit/documentation/Classes/TrustKit.html
         configs.forEach { config in
@@ -52,6 +54,7 @@ public final class TrustKitSSLPinningHandler: AuthChallengeHandler {
             }
 
             domains[config.host] = domain
+            hosts.append(config.host)
         }
 
         let trustKitConfig: [String: Any] = [
@@ -60,22 +63,24 @@ public final class TrustKitSSLPinningHandler: AuthChallengeHandler {
         ]
 
         tk = TrustKit.init(configuration: trustKitConfig)
+        self.hosts = hosts
     }
 
     /// Precheck that the challenge should be handled
     /// - Parameter challenge: Challenge
     /// - Returns: Check result
     func check(challenge: URLAuthenticationChallenge) -> Bool {
-        challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust
+        challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust &&
+        hosts.contains(challenge.protectionSpace.host)
     }
 
     public func handle(_ session: URLSession, challenge: URLAuthenticationChallenge) -> HandlerResult? {
         guard check(challenge: challenge) else { return nil }
         
         var result: HandlerResult? = nil
-        tk.pinningValidator.handle(challenge) { disp, creds in
+        let handled = tk.pinningValidator.handle(challenge) { disp, creds in
             result = (disp, creds)
         }
-        return result
+        return handled ? result : nil
     }
 }

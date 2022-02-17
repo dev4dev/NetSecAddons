@@ -8,8 +8,11 @@
 import Foundation
 import Security
 
-extension String: LocalizedError {
-    public var errorDescription: String? { self }
+public enum PKCS12Error: Error {
+    case incorrectPassphrase
+    case noCertData
+    case importFailed
+    case unknown
 }
 
 /// https://gist.github.com/algal/66703927b8379182640a42294e5f3c0b
@@ -28,14 +31,14 @@ public class PKCS12 {
 
         guard secError == errSecSuccess else {
             if secError == errSecAuthFailed {
-                throw "ERROR: SecPKCS12Import returned errSecAuthFailed. Incorrect password?"
+                throw PKCS12Error.incorrectPassphrase
             }
-            throw "SecPKCS12Import returned an error trying to import PKCS12 data"
+            throw PKCS12Error.importFailed
         }
 
-        guard let theItemsCFArray = items else { throw "No data in the certificate" }
+        guard let theItemsCFArray = items else { throw PKCS12Error.noCertData }
         let theItemsNSArray: NSArray = theItemsCFArray as NSArray
-        guard let dictArray = theItemsNSArray as? [[String: AnyObject]] else { throw "Bad data format" }
+        guard let dictArray = theItemsNSArray as? [[String: AnyObject]] else { throw PKCS12Error.unknown }
 
         func f<T>(_ key: CFString) -> T? {
             for d in dictArray {

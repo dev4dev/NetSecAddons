@@ -51,14 +51,13 @@ public final class SimpleSSLPinningHandler: AuthChallengeHandler {
         policies.add(SecPolicyCreateSSL(true, host as CFString))
         SecTrustSetPolicies(serverTrust, policies)
 
-        var result: SecTrustResultType = SecTrustResultType(rawValue: 0)!
-        SecTrustEvaluate(serverTrust, &result)
+        let result = SecTrustEvaluateWithError(serverTrust, nil)
 
-        guard result == .unspecified || result == .proceed, let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) else {
+        guard result, let serverCertificate = SecTrustGetCertificateAtIndex(serverTrust, 0) else {
             return (.cancelAuthenticationChallenge, nil)
         }
 
-        guard let serverPublicKey = SecCertificateCopyPublicKey(serverCertificate),
+        guard let serverPublicKey = SecCertificateCopyKey(serverCertificate),
               let serverPublicKeyData: NSData = SecKeyCopyExternalRepresentation(serverPublicKey, nil ) else {
                   return nil
               }
@@ -81,8 +80,8 @@ public final class SimpleSSLPinningHandler: AuthChallengeHandler {
         var keyWithHeader = Data(rsa2048Asn1Header)
         keyWithHeader.append(data)
         var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        keyWithHeader.withUnsafeBytes {
-            _ = CC_SHA256($0, CC_LONG(keyWithHeader.count), &hash)
+        keyWithHeader.withUnsafeBytes { (data: UnsafeRawBufferPointer) in
+            _ = CC_SHA256(data.baseAddress, CC_LONG(keyWithHeader.count), &hash)
         }
 
         return Data(hash).base64EncodedString()

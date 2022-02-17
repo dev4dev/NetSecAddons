@@ -12,8 +12,8 @@ let package = Package(
             name: "AuthChallengeHandler",
             targets: ["AuthChallengeHandler"]),
         .library(
-            name: "mTLSHandler",
-            targets: ["mTLSHandler"]
+            name: "AuthMTLSHandler",
+            targets: ["AuthMTLSHandler"]
         )
     ],
     dependencies: [
@@ -27,7 +27,7 @@ let package = Package(
             name: "AuthChallengeHandler",
             dependencies: []),
         .target(
-            name: "mTLSHandler",
+            name: "AuthMTLSHandler",
             dependencies: [
                 "AuthChallengeHandler"
             ]

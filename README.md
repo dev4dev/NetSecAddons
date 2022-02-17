@@ -29,7 +29,7 @@ It allows to pass client cert validation. To use it you need to provide a host n
 
 ```swift
 let data = try! Data(contentsOf: Bundle.main.url(forResource: "cert", withExtension: "pfx")!)
-let handler = MTLSHandler(host: "some-host.com", certData: data, passphrase: "123qweasdzxc")
+let handler = MTLSHandler(hosts: ["some-host.com"], certData: data, passphrase: "123qweasdzxc")
 ```
 
 This can be used for `CloudFlare Shield` thing. As a developer you will be provided with two files, key and cert. To craft them into a `pfx` file you need to execute the following command in terminal

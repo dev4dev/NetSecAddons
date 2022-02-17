@@ -12,27 +12,27 @@ public final class MTLSHandler: AuthChallengeHandler {
 
     let certData: Data
     let passphrase: String
-    let host: String
+    let hosts: [String]
 
     /// Default initializer
     /// - Parameters:
-    ///   - host: Host to handle
+    ///   - hosts: Hosts to handle
     ///   - certData: Certificate data
     ///   - passphrase: Passphrase
-    public init(host: String, certData: Data, passphrase: String) {
+    public init(hosts: [String], certData: Data, passphrase: String) {
         self.certData = certData
         self.passphrase = passphrase
-        self.host = host
+        self.hosts = hosts
     }
 
     /// Convenience initializer, may fail in case of cert file reading error
     /// - Parameters:
-    ///   - host: Host to handle
+    ///   - hosts: Hosts to handle
     ///   - certData: Certificate url
     ///   - passphrase: Passphrase
-    convenience public init?(host: String, certURL: URL, passphrase: String) {
+    convenience public init?(hosts: [String], certURL: URL, passphrase: String) {
         guard let data = try? Data(contentsOf: certURL) else { return nil }
-        self.init(host: host, certData: data, passphrase: passphrase)
+        self.init(hosts: hosts, certData: data, passphrase: passphrase)
     }
 
     /// Precheck that the challenge should be handled
@@ -40,7 +40,7 @@ public final class MTLSHandler: AuthChallengeHandler {
     /// - Returns: Check resutl
     func check(challenge: URLAuthenticationChallenge) -> Bool {
         challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodClientCertificate &&
-        challenge.protectionSpace.host == host
+        hosts.contains(challenge.protectionSpace.host)
     }
 
     public func handle(_ session: URLSession, challenge: URLAuthenticationChallenge) -> HandlerResult? {

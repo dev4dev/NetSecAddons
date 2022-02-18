@@ -14,7 +14,6 @@
 		63F9619927BE83B80074BEF5 /* AuthChallengeHandler in Frameworks */ = {isa = PBXBuildFile; productRef = 63F9619827BE83B80074BEF5 /* AuthChallengeHandler */; };
 		63F9619B27BE83B80074BEF5 /* AuthMTLSHandler in Frameworks */ = {isa = PBXBuildFile; productRef = 63F9619A27BE83B80074BEF5 /* AuthMTLSHandler */; };
 		63F961A027BE83E00074BEF5 /* NetworkService in Frameworks */ = {isa = PBXBuildFile; productRef = 63F9619F27BE83E00074BEF5 /* NetworkService */; };
-		63F961A327BE84DC0074BEF5 /* cert.pfx in Resources */ = {isa = PBXBuildFile; fileRef = 63F961A227BE84DC0074BEF5 /* cert.pfx */; };
 		63F961A527BE9B200074BEF5 /* TrustKitSSLPinningHandler in Frameworks */ = {isa = PBXBuildFile; productRef = 63F961A427BE9B200074BEF5 /* TrustKitSSLPinningHandler */; };
 		63F961A827BE9C3E0074BEF5 /* CommonCombine in Frameworks */ = {isa = PBXBuildFile; productRef = 63F961A727BE9C3E0074BEF5 /* CommonCombine */; };
 		63F961AA27BEA02C0074BEF5 /* SimpleSSLPinningHandler in Frameworks */ = {isa = PBXBuildFile; productRef = 63F961A927BEA02C0074BEF5 /* SimpleSSLPinningHandler */; };
@@ -27,7 +26,6 @@
 		63F9618C27BE82B00074BEF5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63F9618F27BE82B00074BEF5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		63F9619627BE832F0074BEF5 /* NetSecAddons */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = NetSecAddons; path = ..; sourceTree = "<group>"; };
-		63F961A227BE84DC0074BEF5 /* cert.pfx */ = {isa = PBXFileReference; lastKnownFileType = file; path = cert.pfx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +66,6 @@
 		63F9618727BE82AF0074BEF5 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
-				63F961A127BE84D40074BEF5 /* Certs */,
 				63F9618827BE82AF0074BEF5 /* ExamplesApp.swift */,
 				63F9618A27BE82AF0074BEF5 /* ContentView.swift */,
 				63F9618C27BE82B00074BEF5 /* Assets.xcassets */,
@@ -90,14 +87,6 @@
 			children = (
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		63F961A127BE84D40074BEF5 /* Certs */ = {
-			isa = PBXGroup;
-			children = (
-				63F961A227BE84DC0074BEF5 /* cert.pfx */,
-			);
-			path = Certs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,7 +159,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63F961A327BE84DC0074BEF5 /* cert.pfx in Resources */,
 				63F9619027BE82B00074BEF5 /* Preview Assets.xcassets in Resources */,
 				63F9618D27BE82B00074BEF5 /* Assets.xcassets in Resources */,
 			);

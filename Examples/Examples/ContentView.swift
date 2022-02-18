@@ -73,6 +73,10 @@ final class Brain: ObservableObject {
 
     @Published private(set) var state: State = .init()
 
+    #warning("Set values for mTSL Test")
+    let mtlsHost = "http://example.com/"
+    let mtlsPass = ""
+
     init() {
         networkService = URLNetworkService(configuration: .init(), delegate: delegate)
 
@@ -82,8 +86,9 @@ final class Brain: ObservableObject {
     }
 
     private func setupMTLS() {
-        let certData = try! Data(contentsOf: Bundle.main.url(forResource: "cert", withExtension: "pfx")!)
-        delegate.handlersPool.add(handler: MTLSHandler(hosts: ["nomnom-dev-api-shield.texasroadhouse.com"], certData: certData, passphrase: "123qweasdzxc"))
+        guard let url = Bundle.main.url(forResource: "cert", withExtension: "pfx") else { return }
+        guard certData = try? Data(contentsOf: url) else { return }
+        delegate.handlersPool.add(handler: MTLSHandler(hosts: [mtlsHost], certData: certData, passphrase: mtlsPass))
     }
 
     private func setupSSLPinning() {
@@ -107,13 +112,12 @@ final class Brain: ObservableObject {
                 ],
                 hashes: [
                     "P4XmHAiNi9ApJchIW+skNp42+HJzOmpjEjwEBbYqroE="
-//                    "z2bgu6Rryx0PF1Fjk9M9QeAz1WetvekOjTx0bgyv06U=" // test error
                 ])
         ]))
     }
 
     func mtls() {
-        networkService.perform(request: .get(url: URL(string: "https://nomnom-dev-api-shield.texasroadhouse.com/brand")!))
+        networkService.perform(request: .get(url: URL(string: mtlsHost)!))
             .receiveOnMain()
             .sink { compl in
                 if case .failure = compl {

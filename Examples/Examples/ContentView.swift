@@ -87,7 +87,7 @@ final class Brain: ObservableObject {
 
     private func setupMTLS() {
         guard let url = Bundle.main.url(forResource: "cert", withExtension: "pfx") else { return }
-        guard certData = try? Data(contentsOf: url) else { return }
+        guard let certData = try? Data(contentsOf: url) else { return }
         delegate.handlersPool.add(handler: MTLSHandler(hosts: [mtlsHost], certData: certData, passphrase: mtlsPass))
     }
 

@@ -51,8 +51,7 @@ SSL Pinning using [TrustKit](https://github.com/datatheorem/TrustKit) library
 
 ### SimpleSSLPinningHandler
 
-SSL Pinning using implementation from `JSONRequest` that is used on PEETs project
-
+Simple SSL Pinning
 
 
 ## Notes

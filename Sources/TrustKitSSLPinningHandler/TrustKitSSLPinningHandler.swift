@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TrustKitSSLPinningHandler.swift
 //  
 //
 //  Created by Alex Antonyuk on 17.02.2022.

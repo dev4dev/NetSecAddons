@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  AuthChallengeHandlersPool.swift
 //  
 //
 //  Created by Alex Antonyuk on 16.02.2022.
